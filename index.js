@@ -51,7 +51,6 @@ var createToken = function(auth) {
 
 var generateToken = function (req, res, next) {
   req.token = createToken(req.auth);
-  console.log(` req token: ${req.token}`)
   return next();
 };
 
