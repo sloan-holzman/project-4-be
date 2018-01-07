@@ -3,7 +3,7 @@
 const passport = require('passport')
 const TwitterTokenStrategy = require('passport-twitter-token')
 const mongoose = require("./db/schema.js")
-const User = mongoose.model("User")
+const User = require("./db/schema").User;
 const twitterConfig = require('./twitter.config.js');
 
 module.exports = function () {

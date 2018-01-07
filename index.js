@@ -6,14 +6,14 @@ const passport = require('passport')
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const expressJwt = require('express-jwt')
-const router = express.Router()
+// const router = express.Router()
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const request = require('request')
 const twitterConfig = require('./twitter.config.js')
 const mongoose = require("./db/schema.js")
-const User = mongoose.model("User")
+const User = require("./db/schema").User;
 var passportConfig = require('./passport');
 
 //setup configuration for facebook login
@@ -29,16 +29,16 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 
-//rest API requirements
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 
-router.route('/health-check').get(function(req, res) {
-  res.status(200);
-  res.send('Hello World');
+
+app.get("/api/v1/health-check", (req, res) => {
+  res.send("hello world!");
 });
+
 
 var createToken = function(auth) {
   return jwt.sign({
@@ -59,8 +59,7 @@ var sendToken = function (req, res) {
   return res.status(200).send(JSON.stringify(req.user));
 };
 
-router.route('/auth/twitter/reverse')
-  .post(function(req, res) {
+app.post("/api/v1/auth/twitter/reverse", function(req, res) {
     request.post({
       url: 'https://api.twitter.com/oauth/request_token',
       oauth: {
@@ -78,8 +77,7 @@ router.route('/auth/twitter/reverse')
     });
   });
 
-router.route('/auth/twitter')
-  .post((req, res, next) => {
+  app.post("/api/v1/auth/twitter", function(req, res, next) {
     request.post({
       url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
       oauth: {
@@ -147,10 +145,14 @@ var getOne = function (req, res) {
   res.json(user);
 };
 
-router.route('/auth/me')
-  .get(authenticate, getCurrentUser, getOne);
+app.get("/api/v1/auth/me", (req, res) => {
+  (authenticate, getCurrentUser, getOne)
+});
 
-app.use('/api/v1', router);
+// router.route('/auth/me')
+//   .get(authenticate, getCurrentUser, getOne);
+
+// app.use('/api/v1', express.Router());
 
 
 app.listen(1337);
