@@ -22,7 +22,7 @@ module.exports = function () {
 };
 
 function checkLogIn (token, tokenSecret, profile, cb) {
-  return this.findOne({
+  return User.findOne({
     'twitterProvider.id': profile.id
   }, function(err, user) {
     // no user was found, lets create a new one
