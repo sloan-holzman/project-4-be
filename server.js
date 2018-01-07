@@ -2,26 +2,23 @@
 
 //mongoose file must be loaded before all other files in order to provide
 // models to other modules
-var mongoose = require('./mongoose'),
-  passport = require('passport'),
-  express = require('express'),
-  jwt = require('jsonwebtoken'),
-  expressJwt = require('express-jwt'),
-  router = express.Router(),
-  cors = require('cors'),
-  bodyParser = require('body-parser'),
-  request = require('request'),
-  twitterConfig = require('./twitter.config.js');
-
-mongoose();
-
-var User = require('mongoose').model('User');
+const passport = require('passport')
+const express = require('express')
+const jwt = require('jsonwebtoken')
+const expressJwt = require('express-jwt')
+const router = express.Router()
+const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const request = require('request')
+const twitterConfig = require('./twitter.config.js')
+const mongoose = require("./db/schema.js")
+const User = mongoose.model("User")
 var passportConfig = require('./passport');
 
 //setup configuration for facebook login
 passportConfig();
 
-var app = express();
 
 // enable cors
 var corsOption = {

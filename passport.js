@@ -1,9 +1,10 @@
 'use strict';
 
-var passport = require('passport'),
-  TwitterTokenStrategy = require('passport-twitter-token'),
-  User = require('mongoose').model('User'),
-  twitterConfig = require('./twitter.config.js');
+const passport = require('passport')
+const TwitterTokenStrategy = require('passport-twitter-token')
+const mongoose = require("./db/schema.js")
+const User = mongoose.model("User")
+const twitterConfig = require('./twitter.config.js');
 
 module.exports = function () {
 
@@ -13,9 +14,36 @@ module.exports = function () {
       includeEmail: true
     },
     function (token, tokenSecret, profile, done) {
-      User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
+      checkLogIn(token, tokenSecret, profile, function(err, user) {
         return done(err, user);
       });
     }));
 
+};
+
+function checkLogIn (token, tokenSecret, profile, cb) {
+  return this.findOne({
+    'twitterProvider.id': profile.id
+  }, function(err, user) {
+    // no user was found, lets create a new one
+    if (!user) {
+      var newUser = new User({
+        email: profile.emails[0].value,
+        twitterProvider: {
+          id: profile.id,
+          token: token,
+          tokenSecret: tokenSecret
+        }
+      });
+
+      newUser.save(function(error, savedUser) {
+        if (error) {
+          console.log(error);
+        }
+        return cb(error, savedUser);
+      });
+    } else {
+      return cb(err, user);
+    }
+  });
 };
