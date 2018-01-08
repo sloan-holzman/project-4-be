@@ -118,6 +118,7 @@ var authenticate = expressJwt({
   requestProperty: 'auth',
   getToken: function(req) {
     if (req.headers['x-auth-token']) {
+      console.log(req)
       return req.headers['x-auth-token'];
     }
     return null;
@@ -149,29 +150,47 @@ app.get("/api/v1/auth/me", (req, res) => {
 });
 
 
-// app.post("/api/v1/cards", (req, res) => {
-//   (authenticate, getCurrentUser, createCard)
-// });
-//
-// var createCard = function (req, res) {
-//   let user = req.user;
-//   let newCard = new Card({
-//     number: req.number,
-//   	retailer: req.retailer,
-//     expiration: req.expiration,
-//     balance: req.balance
-//   })
-//   user.cards.push(newCard)
-//   user.save((err, user) => {
-//     if(err){
-//       console.error(err)
-//     } else {
-//       console.log(user)
-//       res.send(newCard)
-//       process.exit()
-//     }
-//   })
-// };
+// app.get('/protected',
+//   expressJwt({secret: 'my-secret'}),
+//   function(req, res) {
+//     console.log(req.user.id)
+//     User.findById(req.user.id, function(err, user) {
+//       if (err) {
+//         res.send(401, 'User Not Authenticated');
+//       } else {
+//         console.log("success!")
+//         console.log(user)
+//       }
+//     });
+//   });
+
+app.post('/api/v1/cards',
+  expressJwt({secret: 'my-secret'}),
+  function(req, res) {
+    User.findById(req.user.id, function(err, user) {
+      if (err) {
+        res.send(401, 'User Not Authenticated');
+      } else {
+        console.log("success!")
+        let newCard = new Card({
+          number: req.body.number,
+        	retailer: req.body.retailer,
+          expiration: req.body.expiration,
+          balance: req.body.balance
+        })
+        user.cards.push(newCard)
+        user.save((err, user) => {
+          if(err){
+            res.send(500, 'Failed to create card')
+          } else {
+            console.log(user.cards)
+            res.json(user.cards)
+          }
+        })
+      }
+    });
+  }
+);
 
 app.listen(1337);
 module.exports = app;

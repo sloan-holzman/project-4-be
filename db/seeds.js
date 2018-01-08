@@ -18,13 +18,11 @@ console.log(newCard)
 
 User.findOne({email: 'sloan.holzman@gmail.com'})
 .then((sloan) => {
-  console.log(sloan)
   sloan.cards.push(newCard)
   sloan.save((err, user) => {
     if(err){
       console.error(err)
     } else {
-      console.log(sloan.cards)
       process.exit()
     }
   })
