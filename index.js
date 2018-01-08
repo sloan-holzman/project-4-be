@@ -164,6 +164,22 @@ app.get("/api/v1/auth/me", (req, res) => {
 //     });
 //   });
 
+
+app.get('/api/v1/cards',
+  expressJwt({secret: 'my-secret'}),
+  function(req, res) {
+    User.findById(req.user.id, function(err, user) {
+      if (err) {
+        res.send(401, 'User Not Authenticated');
+      } else {
+        res.json(user)
+      }
+        })
+    }
+);
+
+
+
 app.post('/api/v1/cards',
   expressJwt({secret: 'my-secret'}),
   function(req, res) {
