@@ -212,6 +212,23 @@ app.delete('/api/v1/cards',
   }
 );
 
+app.put('/api/v1/cards/:id',
+  expressJwt({secret: 'my-secret'}),
+  function(req, res) {
+    User.findById(req.user.id, function(err, user) {
+      var card = user.cards.find((card) => card._id == req.params.id);
+      card.set(req.body);
+      user.save()
+      .then(function(user) {
+        res.send(user.cards);
+      })
+      .catch(function(err) {
+        res.status(500).send(err);
+      })
+    })
+  }
+)
+
 
 app.listen(1337);
 module.exports = app;
