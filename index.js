@@ -192,6 +192,27 @@ app.post('/api/v1/cards',
   }
 );
 
+app.delete('/api/v1/cards',
+  expressJwt({secret: 'my-secret'}),
+  function(req, res) {
+    User.findById(req.user.id, function(err, user) {
+      if (err) {
+        res.send(401, 'User Not Authenticated');
+      } else {
+        user.cards.pull(req.body.card_id)
+        user.save((err, user) => {
+          if(err){
+            res.send(500, 'Failed to delete card')
+          } else {
+            res.json(user.cards)
+          }
+        })
+      }
+    });
+  }
+);
+
+
 app.listen(1337);
 module.exports = app;
 
