@@ -30,7 +30,7 @@ UserSchema.set('toJSON', {getters: true, virtuals: true});
 
 
 const User = mongoose.model('User', UserSchema)
-const Card = mongoose.model('Card', UserSchema)
+const Card = mongoose.model('Card', CardSchema)
 
 module.exports = {
   User,

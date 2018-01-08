@@ -2,21 +2,20 @@
 
 //mongoose file must be loaded before all other files in order to provide
 // models to other modules
+const mongoose = require("./db/schema.js")
+const User = require("./db/schema").User;
+const Card = require("./db/schema").Card;
 const passport = require('passport')
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const expressJwt = require('express-jwt')
-// const router = express.Router()
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const request = require('request')
 const twitterConfig = require('./twitter.config.js')
-const mongoose = require("./db/schema.js")
-const User = require("./db/schema").User;
 var passportConfig = require('./passport');
 
-//setup configuration for facebook login
 passportConfig();
 
 
@@ -149,11 +148,30 @@ app.get("/api/v1/auth/me", (req, res) => {
   (authenticate, getCurrentUser, getOne)
 });
 
-// router.route('/auth/me')
-//   .get(authenticate, getCurrentUser, getOne);
 
-// app.use('/api/v1', express.Router());
-
+// app.post("/api/v1/cards", (req, res) => {
+//   (authenticate, getCurrentUser, createCard)
+// });
+//
+// var createCard = function (req, res) {
+//   let user = req.user;
+//   let newCard = new Card({
+//     number: req.number,
+//   	retailer: req.retailer,
+//     expiration: req.expiration,
+//     balance: req.balance
+//   })
+//   user.cards.push(newCard)
+//   user.save((err, user) => {
+//     if(err){
+//       console.error(err)
+//     } else {
+//       console.log(user)
+//       res.send(newCard)
+//       process.exit()
+//     }
+//   })
+// };
 
 app.listen(1337);
 module.exports = app;
