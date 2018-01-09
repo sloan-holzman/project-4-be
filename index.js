@@ -188,12 +188,12 @@ app.post('/api/v1/cards',
         res.send(401, 'User Not Authenticated');
       } else {
         console.log("success!")
-        let newCard = new Card({
-          number: req.body.number,
-        	retailer: req.body.retailer,
-          expiration: req.body.expiration,
-          balance: req.body.balance
-        })
+        let newCard = new Card(req.body)
+          // number: req.body.number,
+        	// retailer: req.body.retailer,
+          // expiration: req.body.expiration,
+          // balance: req.body.balance
+        // })
         user.cards.push(newCard)
         user.save((err, user) => {
           if(err){

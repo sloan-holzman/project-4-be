@@ -2,10 +2,11 @@ const mongoose = require('./connection')
 
 
 const CardSchema = new mongoose.Schema({
-	number: String,
+	number: Number,
 	retailer: String,
   expiration: Date,
   balance: Number,
+	pin: Number,
   updated: { type: Date, default: Date.now }
 })
 
