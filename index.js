@@ -245,8 +245,12 @@ app.put('/api/v1/cards/:id',
   }
 )
 
+app.listen(process.env.PORT || 1337, () => {
+  console.log("app listening on port 1337");
+});
 
-app.listen(1337);
+
+// app.listen(1337);
 module.exports = app;
 
-console.log('Server running at http://127.0.0.1/1337');
+// console.log('Server running at http://127.0.0.1/1337');
