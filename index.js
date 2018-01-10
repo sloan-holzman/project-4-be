@@ -233,7 +233,15 @@ app.put('/api/v1/cards/:id',
   function(req, res) {
     User.findById(req.user.id, function(err, user) {
       var card = user.cards.find((card) => card._id == req.params.id);
-      card.set(req.body);
+      card.set(req.body, { $currentDate: { updated: true } })
+      // card.set({
+      //   number: req.body.number,
+      //   retailer: req.body.retailer,
+      //   expiration: req.body.expiration,
+      //   balance: req.body.balance,
+      //   pin: req.body.pin,
+      //   // updated: Date.now
+      // });
       user.save()
       .then(function(user) {
         res.send(user.cards);
