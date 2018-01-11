@@ -1,9 +1,7 @@
-'use strict';
-
 const passport = require('passport')
 const TwitterTokenStrategy = require('passport-twitter-token')
 const mongoose = require("./db/schema.js")
-const User = require("./db/schema").User;
+const User = mongoose.User;
 const twitterConfig = require('./twitter.config.js');
 
 module.exports = function () {
@@ -25,7 +23,6 @@ function checkLogIn (token, tokenSecret, profile, cb) {
   return User.findOne({
     'twitterProvider.id': profile.id
   }, function(err, user) {
-    // no user was found, lets create a new one
     if (!user) {
       var newUser = new User({
         email: profile.emails[0].value,
