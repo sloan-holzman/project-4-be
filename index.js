@@ -1,4 +1,3 @@
-'use strict';
 
 //mongoose file must be loaded before all other files in order to provide
 // models to other modules
@@ -14,7 +13,9 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const request = require('request')
 const twitterConfig = require('./twitter.config.js')
-var passportConfig = require('./passport');
+const passportConfig = require('./passport');
+
+
 
 passportConfig();
 
@@ -118,7 +119,6 @@ var authenticate = expressJwt({
   requestProperty: 'auth',
   getToken: function(req) {
     if (req.headers['x-auth-token']) {
-      console.log(req)
       return req.headers['x-auth-token'];
     }
     return null;
@@ -153,13 +153,10 @@ app.get("/api/v1/auth/me", (req, res) => {
 // app.get('/protected',
 //   expressJwt({secret: 'my-secret'}),
 //   function(req, res) {
-//     console.log(req.user.id)
 //     User.findById(req.user.id, function(err, user) {
 //       if (err) {
 //         res.send(401, 'User Not Authenticated');
 //       } else {
-//         console.log("success!")
-//         console.log(user)
 //       }
 //     });
 //   });
@@ -187,7 +184,6 @@ app.post('/api/v1/cards',
       if (err) {
         res.send(401, 'User Not Authenticated');
       } else {
-        console.log("success!")
         let newCard = new Card(req.body)
           // number: req.body.number,
         	// retailer: req.body.retailer,
@@ -199,7 +195,6 @@ app.post('/api/v1/cards',
           if(err){
             res.send(500, 'Failed to create card')
           } else {
-            console.log(user.cards)
             res.json(user.cards)
           }
         })
@@ -233,15 +228,22 @@ app.put('/api/v1/cards/:id',
   function(req, res) {
     User.findById(req.user.id, function(err, user) {
       var card = user.cards.find((card) => card._id == req.params.id);
-      card.set(req.body, { $currentDate: { updated: true } })
-      // card.set({
-      //   number: req.body.number,
-      //   retailer: req.body.retailer,
-      //   expiration: req.body.expiration,
-      //   balance: req.body.balance,
-      //   pin: req.body.pin,
-      //   // updated: Date.now
-      // });
+      // card.set(req.body)
+      // card.set({ $currentDate: { updated: true })
+      card.set(
+        {
+          $currentDate: {
+            updated: true,
+          },
+
+            number: req.body.number,
+            retailer: req.body.retailer,
+            expiration: req.body.expiration,
+            balance: req.body.balance,
+            pin: req.body.pin
+
+        }
+      )
       user.save()
       .then(function(user) {
         res.send(user.cards);
@@ -254,11 +256,8 @@ app.put('/api/v1/cards/:id',
 )
 
 app.listen(process.env.PORT || 1337, () => {
-  console.log("app listening on port 1337");
+  console.log("Server running at http://127.0.0.1/1337");
 });
 
 
-// app.listen(1337);
 module.exports = app;
-
-// console.log('Server running at http://127.0.0.1/1337');

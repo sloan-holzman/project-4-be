@@ -15,7 +15,6 @@ User.remove({})
 //   balance: 10.50
 // })
 //
-// console.log(newCard)
 //
 // User.findOne({email: 'sloan.holzman@gmail.com'})
 // .then((sloan) => {
