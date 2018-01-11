@@ -1,3 +1,5 @@
+// authentication approach borrowed heavily from https://medium.com/@robince885/how-to-do-twitter-authentication-with-react-and-restful-api-e525f30c62bb
+
 const passport = require('passport')
 const expressJwt = require('express-jwt')
 const cors = require('cors')
