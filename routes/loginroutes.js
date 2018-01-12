@@ -39,7 +39,7 @@ module.exports = function(app){
   var createToken = function(auth) {
     return jwt.sign({
       id: auth.id
-    }, 'my-secret',
+    }, twitterConfig.secret,
     {
       expiresIn: 60 * 120
     });
@@ -111,7 +111,7 @@ module.exports = function(app){
 
   //token handling middleware
   var authenticate = expressJwt({
-    secret: 'my-secret',
+    secret: twitterConfig.secret,
     requestProperty: 'auth',
     getToken: function(req) {
       if (req.headers['x-auth-token']) {

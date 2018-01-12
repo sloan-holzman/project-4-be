@@ -5,11 +5,13 @@ const Card = mongoose.Card;
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const twitterConfig = require('../twitter.config.js')
+
 
 module.exports = function(app){
 
   app.get('/api/v1/cards',
-    expressJwt({secret: 'my-secret'}),
+    expressJwt({secret: twitterConfig.secret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         if (err) {
@@ -23,7 +25,7 @@ module.exports = function(app){
 
 
   app.post('/api/v1/cards',
-    expressJwt({secret: 'my-secret'}),
+    expressJwt({secret: twitterConfig.secret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         if (err) {
@@ -44,7 +46,7 @@ module.exports = function(app){
   )
 
   app.put('/api/v1/cards/:id',
-    expressJwt({secret: 'my-secret'}),
+    expressJwt({secret: twitterConfig.secret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         var card = user.cards.find((card) => card._id == req.params.id);
@@ -75,7 +77,7 @@ module.exports = function(app){
 
 
   app.delete('/api/v1/cards',
-    expressJwt({secret: 'my-secret'}),
+    expressJwt({secret: twitterConfig.secret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         if (err) {
