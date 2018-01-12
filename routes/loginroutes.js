@@ -18,7 +18,7 @@ module.exports = function(app){
 
   // enable cors
   var corsOption = {
-    origin: true,
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     exposedHeaders: ['x-auth-token']
