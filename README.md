@@ -104,6 +104,7 @@ The fully functioning site can be found here: http://virtual-wallet.surge.sh/
 * change the Callback URL for your twitter app (at https://apps.twitter.com/) to the URL of the frontend site (in my case, to http://virtual-wallet.surge.sh/)
 * change the oauth_callback variable in twitter.config.js to the frontend url
 * change BackEndVariable.js to point to the URL where the backend is hosted
+* also, wherever you deploy for your backend, you need to ensure they have access to the variables saved in twitter.config.js (in Heroku, I saved them as Config Vars called twitterConfig.consumerKey, twitterConfig.consumerSecret, etc.)
 
 ## User stories
 
