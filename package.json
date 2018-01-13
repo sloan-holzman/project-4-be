@@ -18,6 +18,7 @@
   "homepage": "https://github.com/sloan-holzman/project-4-be#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-jwt": "^5.3.0",
