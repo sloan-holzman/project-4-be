@@ -2,6 +2,7 @@ const expressJwt = require('express-jwt')
 const mongoose = require("../db/schema.js")
 const User = mongoose.User;
 const Card = mongoose.Card;
+const Retailer = mongoose.Retailer;
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')

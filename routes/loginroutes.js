@@ -6,6 +6,7 @@ const cors = require('cors')
 const mongoose = require("../db/schema.js")
 const User = mongoose.User;
 const Card = mongoose.Card;
+const Retailer = mongoose.Retailer;
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const app = express()

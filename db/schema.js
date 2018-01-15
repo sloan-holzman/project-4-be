@@ -1,6 +1,11 @@
 const mongoose = require('./connection')
 
 
+const RetailerSchema = new mongoose.Schema({
+	name: String,
+	cardSite: String
+})
+
 const CardSchema = new mongoose.Schema({
 	number: String,
 	retailer: String,
@@ -32,8 +37,11 @@ UserSchema.set('toJSON', {getters: true, virtuals: true});
 
 const User = mongoose.model('User', UserSchema)
 const Card = mongoose.model('Card', CardSchema)
+const Retailer = mongoose.model('Retailer', RetailerSchema)
+
 
 module.exports = {
   User,
-  Card
+  Card,
+	Retailer
 }
