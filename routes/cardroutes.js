@@ -14,11 +14,19 @@ module.exports = function(app){
   app.get('/api/v1/cards',
     expressJwt({secret: twitterConfig.secret}),
     function(req, res) {
-      User.findById(req.user.id, function(err, user) {
+      User.findById(req.user.id, function(err, foundUser) {
         if (err) {
           res.send(401, 'User Not Authenticated');
         } else {
-          res.json(user)
+          Retailer.find({}, function(err, foundRetailers) {
+            if (err) {
+              res.send(500, 'err')
+            } else {
+              res.json({user: foundUser, retailers: foundRetailers})
+            }
+          })
+
+
         }
           })
       }
