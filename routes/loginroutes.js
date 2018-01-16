@@ -51,10 +51,22 @@ module.exports = function(app){
     return next();
   };
 
+  // var sendToken = function (req, res) {
+  //   res.setHeader('x-auth-token', req.token);
+  //   return res.status(200).send(JSON.stringify(req.user));
+  // };
+
   var sendToken = function (req, res) {
     res.setHeader('x-auth-token', req.token);
-    return res.status(200).send(JSON.stringify(req.user));
-  };
+    // let jsonUser = JSON.stringify(req.user)
+    Retailer.find({}, function(err, foundRetailers) {
+      if (err) {
+        res.send(500, 'err')
+      } else {
+        res.status(200).json({user: req.user, retailers: foundRetailers})
+      }
+    })
+  }
 
   app.post("/api/v1/auth/twitter/reverse", function(req, res) {
       request.post({
