@@ -69,8 +69,9 @@ module.exports = function(app){
               number: req.body.number,
               retailer: req.body.retailer,
               expiration: req.body.expiration,
-              balance: req.body.balance,
-              pin: req.body.pin
+              amount: req.body.amount,
+              pin: req.body.pin,
+              type: req.body.type
           }
         )
         user.save()

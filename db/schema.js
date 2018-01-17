@@ -7,10 +7,11 @@ const RetailerSchema = new mongoose.Schema({
 })
 
 const CardSchema = new mongoose.Schema({
+	type: String,
 	number: String,
 	retailer: String,
   expiration: Date,
-  balance: Number,
+  amount: String,
 	pin: String,
   updated: { type: Date, default: Date.now }
 })
