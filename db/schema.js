@@ -13,7 +13,8 @@ const CardSchema = new mongoose.Schema({
   expiration: Date,
   amount: String,
 	pin: String,
-  updated: { type: Date, default: Date.now }
+  updated: { type: Date, default: Date.now },
+	cardHtml: String
 })
 
 var UserSchema = new mongoose.Schema({
