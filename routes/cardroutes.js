@@ -71,7 +71,8 @@ module.exports = function(app){
               expiration: req.body.expiration,
               amount: req.body.amount,
               pin: req.body.pin,
-              type: req.body.type
+              type: req.body.type,
+              cardHtml: req.body.cardHtml
           }
         )
         user.save()
