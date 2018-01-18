@@ -12,21 +12,21 @@ const jwt = require('jsonwebtoken')
 const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
-const twitterConfig = require('../twitter.config.js')
+// const twitterConfig = require('../twitter.config.js')
 const passportConfig = require('../passport');
 
 module.exports = function(app){
 
-  // enable cors
-  // var corsOption = {
-  //   origin: "*",
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   credentials: true,
-  //   exposedHeaders: ['x-auth-token']
-  // };
-  // app.use(cors(corsOption));
+  enable cors
+  var corsOption = {
+    origin: "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  };
+  app.use(cors(corsOption));
 
-  app.options('*', cors())
+  // app.options('*', cors())
 
   app.use(bodyParser.urlencoded({
     extended: true
