@@ -33,13 +33,13 @@ module.exports = function(app){
   //   };
   // }
 
-  // var corsOption = {
-  //   origin: "*",
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   credentials: true,
-  //   exposedHeaders: ['x-auth-token']
-  // };
-  // app.use(cors(corsOption));
+  var corsOption = {
+    origin: "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  };
+  app.use(cors(corsOption));
 
 
 
