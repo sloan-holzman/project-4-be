@@ -7,17 +7,17 @@ const cors = require('cors')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+var twitterSecret = process.env.SECRET
 if (process.env.NODE_ENV == "production") {
-  const twitterSecret = process.env.SECRET
+  twitterSecret = process.env.SECRET
 } else {
-  const twitterSecret = twitterConfig.secret
+  twitterSecret = twitterConfig.secret
 }
 
 
 
 module.exports = function(app){
 
-  enable cors
   var corsOption = {
     origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -25,6 +25,30 @@ module.exports = function(app){
     exposedHeaders: ['x-auth-token']
   };
   app.use(cors(corsOption));
+
+  let cors_list
+
+  if (process.env.NODE_ENV === "production") {
+    cors_list = {
+      origin: "http://virtual-wallet.surge.sh",
+      default: "http://virtual-wallet.surge.sh"
+    };
+  } else {
+    cors_list = {
+      origin: "http://127.0.0.1:3000",
+      default: "http://127.0.0.1:3000"
+    };
+  }
+
+  var corsOption = {
+    origin: cors_list,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  };
+  app.use(cors(corsOption));
+
+
 
 
   app.get('/api/v1/cards',
