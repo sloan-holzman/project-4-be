@@ -19,7 +19,7 @@ module.exports = function(app){
 
   // enable cors
   var corsOption = {
-    origin: "*",
+    origin: "https://virtual-wallet.surge.sh/",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     exposedHeaders: ['x-auth-token']
