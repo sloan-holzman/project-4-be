@@ -33,22 +33,22 @@ if (process.env.NODE_ENV == "production") {
 
 module.exports = function(app){
 
-  let cors_list
-
-  if (process.env.NODE_ENV === "production") {
-    cors_list = {
-      origin: "http://virtual-wallet.surge.sh",
-      default: "http://virtual-wallet.surge.sh"
-    };
-  } else {
-    cors_list = {
-      origin: "http://127.0.0.1:3000",
-      default: "http://127.0.0.1:3000"
-    };
-  }
+  // let cors_list
+  //
+  // if (process.env.NODE_ENV === "production") {
+  //   cors_list = {
+  //     origin: "http://virtual-wallet.surge.sh",
+  //     default: "http://virtual-wallet.surge.sh"
+  //   };
+  // } else {
+  //   cors_list = {
+  //     origin: "http://127.0.0.1:3000",
+  //     default: "http://127.0.0.1:3000"
+  //   };
+  // }
 
   var corsOption = {
-    origin: cors_list,
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     exposedHeaders: ['x-auth-token']

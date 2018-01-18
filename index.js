@@ -14,6 +14,14 @@ const passportConfig = require('./passport');
 require('./routes/loginroutes')(app);
 require('./routes/cardroutes')(app);
 
+var corsOption = {
+  origin: "*",
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
+
 passportConfig();
 
 app.listen(process.env.PORT || 1337, () => {
