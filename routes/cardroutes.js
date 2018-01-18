@@ -6,13 +6,19 @@ const Retailer = mongoose.Retailer;
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const twitterConfig = require('../twitter.config.js')
+if (process.env.NODE_ENV == "production") {
+  process.env.MLAB_URL
+  const twitterSecret = process.env.secret
+} else {
+  const twitterSecret = twitterConfig.secret
+}
+
 
 
 module.exports = function(app){
 
   app.get('/api/v1/cards',
-    expressJwt({secret: twitterConfig.secret}),
+    expressJwt({secret: twitterSecret}),
     function(req, res) {
       User.findById(req.user.id, function(err, foundUser) {
         if (err) {
@@ -34,7 +40,7 @@ module.exports = function(app){
 
 
   app.post('/api/v1/cards',
-    expressJwt({secret: twitterConfig.secret}),
+    expressJwt({secret: twitterSecret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         if (err) {
@@ -55,7 +61,7 @@ module.exports = function(app){
   )
 
   app.put('/api/v1/cards/:id',
-    expressJwt({secret: twitterConfig.secret}),
+    expressJwt({secret: twitterSecret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         var card = user.cards.find((card) => card._id == req.params.id);
@@ -88,7 +94,7 @@ module.exports = function(app){
 
 
   app.delete('/api/v1/cards',
-    expressJwt({secret: twitterConfig.secret}),
+    expressJwt({secret: twitterSecret}),
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         if (err) {

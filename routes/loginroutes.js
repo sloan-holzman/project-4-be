@@ -12,8 +12,21 @@ const jwt = require('jsonwebtoken')
 const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
-// const twitterConfig = require('../twitter.config.js')
 const passportConfig = require('../passport');
+if (process.env.NODE_ENV == "production") {
+  process.env.MLAB_URL
+  const twitterConsumerKey = process.env.consumerKey
+  const twitterConsumerSecret = process.env.consumerSecret
+  const twitterOauthCallBack = process.env.oauth_callback
+  const twitterSecret = process.env.secret
+} else {
+  const twitterConfig = require('../twitter.config.js')
+  const twitterConsumerKey = twitterConfig.consumerKey
+  const twitterConsumerSecret = twitterConfig.consumerSecret
+  const twitterOauthCallBack = twitterConfig.oauth_callback
+  const twitterSecret = twitterConfig.secret
+}
+
 
 module.exports = function(app){
 
@@ -42,7 +55,7 @@ module.exports = function(app){
   var createToken = function(auth) {
     return jwt.sign({
       id: auth.id
-    }, twitterConfig.secret,
+    }, twitterSecret,
     {
       expiresIn: 60 * 120
     });
@@ -74,9 +87,9 @@ module.exports = function(app){
       request.post({
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
-          oauth_callback: twitterConfig.oauth_callback,
-          consumer_key: twitterConfig.consumerKey,
-          consumer_secret: twitterConfig.consumerSecret
+          oauth_callback: twitterOauthCallBack,
+          consumer_key: twitterConsumerKey,
+          consumer_secret: twitterConsumerSecret
         }
       }, function (err, r, body) {
         if (err) {
@@ -92,8 +105,8 @@ module.exports = function(app){
       request.post({
         url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
         oauth: {
-          consumer_key: twitterConfig.consumerKey,
-          consumer_secret: twitterConfig.consumerSecret,
+          consumer_key: twitterConsumerKey,
+          consumer_secret: twitterConsumerSecret,
           token: req.query.oauth_token
         },
         form: { oauth_verifier: req.query.oauth_verifier }
@@ -126,7 +139,7 @@ module.exports = function(app){
 
   //token handling middleware
   var authenticate = expressJwt({
-    secret: twitterConfig.secret,
+    secret: twitterSecret,
     requestProperty: 'auth',
     getToken: function(req) {
       if (req.headers['x-auth-token']) {
