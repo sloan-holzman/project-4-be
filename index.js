@@ -6,6 +6,7 @@ const Retailer = require("./db/schema").Retailer;
 const passport = require('passport')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
@@ -20,6 +21,7 @@ var corsOption = {
   credentials: true,
   exposedHeaders: ['x-auth-token']
 };
+
 app.use(cors(corsOption));
 
 passportConfig();
