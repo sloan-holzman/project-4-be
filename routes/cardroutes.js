@@ -7,8 +7,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 if (process.env.NODE_ENV == "production") {
-  process.env.MLAB_URL
-  const twitterSecret = process.env.secret
+  const twitterSecret = process.env.SECRET
 } else {
   const twitterSecret = twitterConfig.secret
 }

@@ -14,11 +14,10 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const passportConfig = require('../passport');
 if (process.env.NODE_ENV == "production") {
-  process.env.MLAB_URL
-  const twitterConsumerKey = process.env.consumerKey
-  const twitterConsumerSecret = process.env.consumerSecret
-  const twitterOauthCallBack = process.env.oauth_callback
-  const twitterSecret = process.env.secret
+  const twitterConsumerKey = process.env.CONSUMER_KEY
+  const twitterConsumerSecret = process.env.CONSUMER_SECRET
+  const twitterOauthCallBack = process.env.OAUTH_CALLBACK
+  const twitterSecret = process.env.SECRET
 } else {
   const twitterConfig = require('../twitter.config.js')
   const twitterConsumerKey = twitterConfig.consumerKey
