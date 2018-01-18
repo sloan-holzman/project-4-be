@@ -3,6 +3,7 @@ const mongoose = require("../db/schema.js")
 const User = mongoose.User;
 const Card = mongoose.Card;
 const Retailer = mongoose.Retailer;
+const cors = require('cors')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
@@ -15,6 +16,16 @@ if (process.env.NODE_ENV == "production") {
 
 
 module.exports = function(app){
+
+  enable cors
+  var corsOption = {
+    origin: "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  };
+  app.use(cors(corsOption));
+
 
   app.get('/api/v1/cards',
     expressJwt({secret: twitterSecret}),
