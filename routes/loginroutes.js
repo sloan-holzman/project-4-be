@@ -13,11 +13,18 @@ const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
 const passportConfig = require('../passport');
-const twitterConsumerKey = process.env.CONSUMER_KEY
-const twitterConsumerSecret = process.env.CONSUMER_SECRET
-const twitterOauthCallBack = process.env.OAUTH_CALLBACK
-const twitterSecret = process.env.SECRET
-
+if (process.env.NODE_ENV == "production") {
+  const twitterConsumerKey = process.env.CONSUMER_KEY
+  const twitterConsumerSecret = process.env.CONSUMER_SECRET
+  const twitterOauthCallBack = process.env.OAUTH_CALLBACK
+  const twitterSecret = process.env.SECRET
+} else {
+  const twitterConfig = require('../twitter.config.js')
+  const twitterConsumerKey = twitterConfig.consumerKey
+  const twitterConsumerSecret = twitterConfig.consumerSecret
+  const twitterOauthCallBack = twitterConfig.oauth_callback
+  const twitterSecret = twitterConfig.secret
+}
 
 
 module.exports = function(app){
@@ -47,6 +54,7 @@ module.exports = function(app){
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+
   app.use(bodyParser.json());
 
 
@@ -69,20 +77,12 @@ module.exports = function(app){
     return next();
   };
 
-  // var sendToken = function (req, res) {
-  //   res.setHeader('x-auth-token', req.token);
-  //   return res.status(200).send(JSON.stringify(req.user));
-  // };
-
   var sendToken = function (req, res) {
-    // res.setHeader('x-auth-token', req.token);
-    // let jsonUser = JSON.stringify(req.user)
     Retailer.find({}, function(err, foundRetailers) {
+      res.setHeader('x-auth-token', req.token);
       if (err) {
-        res.setHeader('x-auth-token', req.token);
         res.send(500, 'err')
       } else {
-        res.setHeader('x-auth-token', req.token);
         res.status(200).json({user: req.user, retailers: foundRetailers})
       }
     })
