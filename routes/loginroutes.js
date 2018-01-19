@@ -55,15 +55,6 @@ module.exports = function(app){
   };
   app.use(cors(corsOption));
 
-  // app.options('*', cors())
-
-
-
-
-  // app.use(cors(cors_list));
-
-
-
   app.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -95,12 +86,14 @@ module.exports = function(app){
   // };
 
   var sendToken = function (req, res) {
-    res.setHeader('x-auth-token', req.token);
+    // res.setHeader('x-auth-token', req.token);
     // let jsonUser = JSON.stringify(req.user)
     Retailer.find({}, function(err, foundRetailers) {
       if (err) {
+        res.setHeader('x-auth-token', req.token);
         res.send(500, 'err')
       } else {
+        res.setHeader('x-auth-token', req.token);
         res.status(200).json({user: req.user, retailers: foundRetailers})
       }
     })

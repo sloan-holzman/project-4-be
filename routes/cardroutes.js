@@ -3,46 +3,20 @@ const mongoose = require("../db/schema.js")
 const User = mongoose.User;
 const Card = mongoose.Card;
 const Retailer = mongoose.Retailer;
-const cors = require('cors')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-var twitterSecret = process.env.SECRET
+var twitterSecret
 if (process.env.NODE_ENV == "production") {
   twitterSecret = process.env.SECRET
 } else {
+  twitterConfig = require('../twitter.config.js')
   twitterSecret = twitterConfig.secret
 }
 
 
 
 module.exports = function(app){
-
-
-  // let cors_list
-  //
-  // if (process.env.NODE_ENV === "production") {
-  //   cors_list = {
-  //     origin: "http://virtual-wallet.surge.sh",
-  //     default: "http://virtual-wallet.surge.sh"
-  //   };
-  // } else {
-  //   cors_list = {
-  //     origin: "http://127.0.0.1:3000",
-  //     default: "http://127.0.0.1:3000"
-  //   };
-  // }
-
-  var corsOption = {
-    origin: "*",
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    exposedHeaders: ['x-auth-token']
-  };
-  app.use(cors(corsOption));
-
-
-
 
   app.get('/api/v1/cards',
     expressJwt({secret: twitterSecret}),
