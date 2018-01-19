@@ -11,7 +11,7 @@ if (process.env.NODE_ENV == "production") {
   twitterConsumerKey = process.env.CONSUMER_KEY
   twitterConsumerSecret = process.env.CONSUMER_SECRET
 } else {
-  twitterConfig = require('../twitter.config.js')
+  twitterConfig = require('./twitter.config.js')
   twitterConsumerKey = twitterConfig.consumerKey
   twitterConsumerSecret = twitterConfig.consumerSecret
 }
