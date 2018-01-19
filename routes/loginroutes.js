@@ -13,10 +13,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
 const passportConfig = require('../passport');
-var twitterConsumerKey
-var twitterConsumerSecret
-var twitterOauthCallBack
-var twitterSecret
 const twitterConsumerKey = process.env.CONSUMER_KEY
 const twitterConsumerSecret = process.env.CONSUMER_SECRET
 const twitterOauthCallBack = process.env.OAUTH_CALLBACK
