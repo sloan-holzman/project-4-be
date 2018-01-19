@@ -17,18 +17,18 @@ var twitterConsumerKey
 var twitterConsumerSecret
 var twitterOauthCallBack
 var twitterSecret
-if (process.env.NODE_ENV == "production") {
-  twitterConsumerKey = process.env.CONSUMER_KEY
-  twitterConsumerSecret = process.env.CONSUMER_SECRET
-  twitterOauthCallBack = process.env.OAUTH_CALLBACK
-  twitterSecret = process.env.SECRET
-} else {
-  twitterConfig = require('../twitter.config.js')
-  twitterConsumerKey = twitterConfig.consumerKey
-  twitterConsumerSecret = twitterConfig.consumerSecret
-  twitterOauthCallBack = twitterConfig.oauth_callback
-  twitterSecret = twitterConfig.secret
-}
+// if (process.env.NODE_ENV == "production") {
+twitterConsumerKey = process.env.CONSUMER_KEY
+twitterConsumerSecret = process.env.CONSUMER_SECRET
+twitterOauthCallBack = process.env.OAUTH_CALLBACK
+twitterSecret = process.env.SECRET
+// } else {
+//   twitterConfig = require('../twitter.config.js')
+//   twitterConsumerKey = twitterConfig.consumerKey
+//   twitterConsumerSecret = twitterConfig.consumerSecret
+//   twitterOauthCallBack = twitterConfig.oauth_callback
+//   twitterSecret = twitterConfig.secret
+// }
 
 
 module.exports = function(app){

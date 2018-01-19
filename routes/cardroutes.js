@@ -7,12 +7,12 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 var twitterSecret
-if (process.env.NODE_ENV == "production") {
+// if (process.env.NODE_ENV == "production") {
   twitterSecret = process.env.SECRET
-} else {
-  twitterConfig = require('../twitter.config.js')
-  twitterSecret = twitterConfig.secret
-}
+// } else {
+//   twitterConfig = require('../twitter.config.js')
+//   twitterSecret = twitterConfig.secret
+// }
 
 
 
