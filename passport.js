@@ -4,13 +4,16 @@ const passport = require('passport')
 const TwitterTokenStrategy = require('passport-twitter-token')
 const mongoose = require("./db/schema.js")
 const User = mongoose.User;
+var twitterConsumerKey
+var twitterConsumerSecret
+var twitterConfig
 if (process.env.NODE_ENV == "production") {
-  const twitterConsumerKey = process.env.CONSUMER_KEY
-  const twitterConsumerSecret = process.env.CONSUMER_SECRET
+  twitterConsumerKey = process.env.CONSUMER_KEY
+  twitterConsumerSecret = process.env.CONSUMER_SECRET
 } else {
-  const twitterConfig = require('../twitter.config.js')
-  const twitterConsumerKey = twitterConfig.consumerKey
-  const twitterConsumerSecret = twitterConfig.consumerSecret
+  twitterConfig = require('../twitter.config.js')
+  twitterConsumerKey = twitterConfig.consumerKey
+  twitterConsumerSecret = twitterConfig.consumerSecret
 }
 
 module.exports = function () {

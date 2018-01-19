@@ -13,17 +13,22 @@ const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
 const passportConfig = require('../passport');
+var twitterConsumerKey
+var twitterConsumerSecret
+var twitterOauthCallBack
+var twitterSecret
+var twitterConfig
 if (process.env.NODE_ENV == "production") {
-  const twitterConsumerKey = process.env.CONSUMER_KEY
-  const twitterConsumerSecret = process.env.CONSUMER_SECRET
-  const twitterOauthCallBack = process.env.OAUTH_CALLBACK
-  const twitterSecret = process.env.SECRET
+  twitterConsumerKey = process.env.CONSUMER_KEY
+  twitterConsumerSecret = process.env.CONSUMER_SECRET
+  twitterOauthCallBack = process.env.OAUTH_CALLBACK
+  twitterSecret = process.env.SECRET
 } else {
-  const twitterConfig = require('../twitter.config.js')
-  const twitterConsumerKey = twitterConfig.consumerKey
-  const twitterConsumerSecret = twitterConfig.consumerSecret
-  const twitterOauthCallBack = twitterConfig.oauth_callback
-  const twitterSecret = twitterConfig.secret
+  twitterConfig = require('../twitter.config.js')
+  twitterConsumerKey = twitterConfig.consumerKey
+  twitterConsumerSecret = twitterConfig.consumerSecret
+  twitterOauthCallBack = twitterConfig.oauth_callback
+  twitterSecret = twitterConfig.secret
 }
 
 

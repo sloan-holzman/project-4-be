@@ -6,11 +6,13 @@ const Retailer = mongoose.Retailer;
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+var twitterSecret
+var twitterConfig
 if (process.env.NODE_ENV == "production") {
-  const twitterSecret = process.env.SECRET
+  twitterSecret = process.env.SECRET
 } else {
-  const twitterConfig = require('../twitter.config.js')
-  const twitterSecret = twitterConfig.secret
+  twitterConfig = require('../twitter.config.js')
+  twitterSecret = twitterConfig.secret
 }
 
 module.exports = function(app){
