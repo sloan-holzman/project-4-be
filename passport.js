@@ -4,13 +4,14 @@ const passport = require('passport')
 const TwitterTokenStrategy = require('passport-twitter-token')
 const mongoose = require("./db/schema.js")
 const User = mongoose.User;
-const twitterConfig = require('./twitter.config.js');
+const twitterConsumerKey = process.env.CONSUMER_KEY
+const twitterConsumerSecret = process.env.CONSUMER_SECRET
 
 module.exports = function () {
 
   passport.use(new TwitterTokenStrategy({
-      consumerKey: twitterConfig.consumerKey,
-      consumerSecret: twitterConfig.consumerSecret,
+      consumerKey: twitterConsumerKey,
+      consumerSecret: twitterConsumerSecret,
       includeEmail: true
     },
     function (token, tokenSecret, profile, done) {

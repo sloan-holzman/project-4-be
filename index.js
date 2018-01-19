@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken')
 const app = express()
 const bodyParser = require('body-parser')
 const request = require('request')
-const twitterConfig = require('./twitter.config.js')
 const passportConfig = require('./passport');
 require('./routes/loginroutes')(app);
 require('./routes/cardroutes')(app);
