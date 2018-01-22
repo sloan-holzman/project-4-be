@@ -1,4 +1,3 @@
-require('newrelic');
 const mongoose = require("./db/schema.js")
 const User = require("./db/schema").User;
 const Card = require("./db/schema").Card;
