@@ -20,7 +20,7 @@ The project is a website that allows user to save digital copies of their gift c
 * Login with Twitter: using Oauth to manage the process
 * Full CRUD on gift cards/coupons: users can create, read, update, and delete their digital gift cards (and soon coupons)
 * Filtering by retailer: users can search for their gift cards/coupons by vendor
-* Links: The site automatically creates custom links (by retailer) to check how much value is remaining on each gift card and to find additional discounted gift cards or coupons (by retailer)
+* Links: The site automatically provides thousands of scraped links (by retailer) to check how much value is remaining on each gift card and to find additional discounted gift cards or coupons (by retailer)
 * Bar code generation: Based on the card number entered, the site autogenerates a barcode that can be scanned on their mobile devises
 * Alerts: The site shows alert messages when the user logs in, creates/edits/deletes a card, or experiences an error (generally when pinging the backend)
 * Mobile responsiveness: The site is adjusts to smaller screens to ensure visibility on smartphones and tablets.
@@ -86,7 +86,7 @@ The fully functioning site can be found here: http://virtual-wallet.surge.sh/
 
 ### Local deployment
 
-* You must first register a twitter app and enable access to the user's email.  Instructions can be found here (https://medium.com/@robince885/how-to-do-twitter-authentication-with-react-and-restful-api-e525f30c62bb) under the 'Creating a new Twitter application' section.  For the callback, put http://127.0.0.1:3000/
+* You must first register a twitter app and enable access to the user's email.  Instructions can be found here (https://medium.com/@robince885/how-to-do-twitter-authentication-with-react-and-restful-api-e525f30c62bb) under the 'Creating a new Twitter application' section.  For the callback, put the URL of the frontend site (in my case, to http://127.0.0.1:3000/).  I recommend registering two apps (one for local and one for production) so that you do not need to keep switching the callback URL for local and production deployment
 * On the backend, you must create a file called twitter.config.js (not included in this repo) with the following structure:
   module.exports = {
     consumerKey: 'TWITTER_CONSUMER_KEY',
@@ -94,17 +94,15 @@ The fully functioning site can be found here: http://virtual-wallet.surge.sh/
     oauth_callback: 'http://127.0.0.1:3000/',
     secret: 'YOUR_MADE_UP_SECRET_FOR_TOKEN_ENCRYPTION' (NOTE: in a production environment, you should use a proper hashing algorithm)
   };
-* On the frontend: you just need to make sure that the BackEndVariable.js file reads `let backend = "http://localhost:1337/";`
 * node or `nodemon index.js` the backend and `npm start` the frontend to kick it off locally
 * NOTE: the twitter authentication will not work at `http://localhost:3000/`.  Instead, just open a new tab at `http://127.0.0.1:3000/`
 
 ### Production deployment
 
 * I used Heroku to deploy my backend (with mLab hosting the database) and Surge to host my frontend.  You can use whatever hosting platforms you prefer.  But, before deploying you need to...
-* change the Callback URL for your twitter app (at https://apps.twitter.com/) to the URL of the frontend site (in my case, to http://virtual-wallet.surge.sh/)
-* change the oauth_callback variable in twitter.config.js to the frontend url
-* change BackEndVariable.js to point to the URL where the backend is hosted
-* also, wherever you deploy for your backend, you need to ensure they have access to the variables saved in twitter.config.js (in Heroku, I saved them as Config Vars called twitterConfig.consumerKey, twitterConfig.consumerSecret, etc.)
+* You must first register a twitter app and enable access to the user's email.  Instructions can be found here (https://medium.com/@robince885/how-to-do-twitter-authentication-with-react-and-restful-api-e525f30c62bb) under the 'Creating a new Twitter application' section.  For the callback, put the URL of the frontend site (in my case, to http://virtual-wallet.surge.sh/).  I recommend registering two apps (one for local and one for production) so that you do not need to keep switching the callback URL for local and production deployment
+* change BackEndVariable.js in the frontend repo to point to the URL where the backend is hosted
+* wherever you deploy your backend, you need to ensure it has access to the variables saved in twitter.config.js (in Heroku, I saved them as Config Variables called 'CONSUMER_KEY', 'CONSUMER_SECRET', and 'OAUTH_CALLBACK').  For OAUTH_CALLBACK, put the URL for where your frontend is deployed (in my case, https://virtual-wallet.surge.sh)
 
 ## User stories
 
@@ -115,12 +113,9 @@ The fully functioning site can be found here: http://virtual-wallet.surge.sh/
 
 ## Remaining to-do's
 
-* Add in coupons, in addition to gift cards (materializecss is conflicting with jquery, preventing me from creating a simple dropdown to select gift card or coupon. will have to sort out)
 * Allow login with google and/or facebook, too
-* Fully optimize for mobile, ensuring users can easily zoom in and have an individual gift card or coupon can take up the full screen
 * Abstract data fetching, alerts, and some other key functions into a services folder to make the code more DRY and easier to follow (frontend)
 * Abstract the EditCard and NewCard components into one component with different props passed in (frontend)
-* Re-organize the css, possibly breaking out into multiple files (frontend)
 * Add prototypes to ensure the correct data types are being passed in (frontend)
 * Fix the "updated day" from being off by one day (frontend)
 * Send email reminders when gift cards / coupons are about to expire (frontend and backend)
