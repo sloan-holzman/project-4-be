@@ -6,36 +6,33 @@ const User = require("./schema").User;
 const Card = require("./schema").Card;
 
 
-let retailers = [];
+// let retailers = [];
+
+// note: this function scrapes all the links to check retailer gift card balances
 
 var scrape = function(url, cb) {
 
-  // if our url is the times home page (and it will be)...
   if (url == "https://www.raise.com/gift-card-balance") {
 
-    // then use request to take in the body of the page's html
+    // use request to take in the body of the page's html
     request(url, function(err, res, body) {
 
       // load the body into cheerio's shorthand
       var $ = cheerio.load(body);
 
-      // and make an empty object to save our article info
+      // and make an empty object to save our retailers' info
       var retailers = [];
-      links = $('a:contains("Gift Card Balance")');; //jquery get all hyperlinks
+      links = $('a:contains("Gift Card Balance")');; //jquery get all hyperlinks to gift card balance checks
 
-      // now, find each element that has the "theme-summary" class
-      // (i.e, the section holding the articles)
+      // now, save the URL for each retailer as an object in the retailers array
       $(links).each(function(i, link){
-        // console.log(i)
         let retailerName = $(link).text().replace(' Gift Card Balance','').toLowerCase()
         let retailerSite = $(link).attr('href')
         retailers[i] = {name: retailerName, cardSite: retailerSite}
       });
 
-      // with every article scraped into the articles object (good for testing)
-      // console.log(retailers);
 
-      // now, pass articles into our callback function
+      // now, pass retailers into our callback function
       cb(retailers);
     });
   }
@@ -55,7 +52,9 @@ User.remove({})
       .then(() => {
         scrape("https://www.raise.com/gift-card-balance", function(retailers) {
           retailers.forEach((retailer, i) => {
+            // create a new Retailer model
             let newRetailer = new Retailer(retailer)
+            //save it.  console log the error or if not error, the retailer info
             newRetailer.save((err, newRetailer) => {
               err ? console.log(err) : console.log(newRetailer);
             });

@@ -65,8 +65,6 @@ module.exports = function(app){
     function(req, res) {
       User.findById(req.user.id, function(err, user) {
         var card = user.cards.find((card) => card._id == req.params.id);
-        // card.set(req.body)
-        // card.set({ $currentDate: { updated: true })
         card.set(
           {
             $currentDate: {

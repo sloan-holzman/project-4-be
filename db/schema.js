@@ -1,6 +1,6 @@
 const mongoose = require('./connection')
 
-
+// Retailer is just the names of all the possible retailers and the URLs to where you can check gift card balances for each retailer
 const RetailerSchema = new mongoose.Schema({
 	name: String,
 	cardSite: String
