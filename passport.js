@@ -31,6 +31,7 @@ module.exports = function () {
 
 };
 
+// 4. based on the profile id, checks if user is already saved in DB.   If not already in the system, create one.  Either way, pass user to callback function (which is specified as the "done" function above)
 function checkLogIn (token, tokenSecret, profile, cb) {
   return User.findOne({
     'twitterProvider.id': profile.id

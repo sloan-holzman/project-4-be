@@ -43,6 +43,7 @@ module.exports = function(app){
   };
   app.use(cors(corsOption));
 
+  // tells the system whether you want to use a simple algorithm for shallow parsing (i.e. false) or complex algorithm for deep parsing that can deal with nested objects (i.e. true).
   app.use(bodyParser.urlencoded({
     extended: true
   }));
@@ -50,11 +51,7 @@ module.exports = function(app){
   app.use(bodyParser.json());
 
 
-  app.get("/api/v1/health-check", (req, res) => {
-    res.send("hello world!");
-  });
-
-
+  // 5a. user jwt to create a unique token based on the user id and on the twitter secret that expired in 2 hours
   var createToken = function(auth) {
     return jwt.sign({
       id: auth.id
@@ -64,11 +61,14 @@ module.exports = function(app){
     });
   };
 
+  // 5. create a token based on the User's DB ID
   var generateToken = function (req, res, next) {
     req.token = createToken(req.auth);
     return next();
   };
 
+
+  // 6. set the x-auth-token header to the token and send back the user details, along with the header, to the front end
   var sendToken = function (req, res) {
     Retailer.find({}, function(err, foundRetailers) {
       res.setHeader('x-auth-token', req.token);
@@ -80,7 +80,9 @@ module.exports = function(app){
     })
   }
 
+  // 1. receive initial sign in request from frontend
   app.post("/api/v1/auth/twitter/reverse", function(req, res) {
+      // ask for request token from twitter
       request.post({
         url: 'https://api.twitter.com/oauth/request_token',
         oauth: {
@@ -92,13 +94,16 @@ module.exports = function(app){
         if (err) {
           return res.send(500, { message: e.message });
         }
-
+        //  response is not formated as JSON object. transform it to JSON object
         var jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
+        // send it back to the client that has requested request_token.
         res.send(JSON.parse(jsonStr));
       });
     });
 
+    // 2. after user has logged in to twitter and received verification code (oath_verifier)
     app.post("/api/v1/auth/twitter", function(req, res, next) {
+      // send request to twitter to get oauth_token and oauth_token_secret
       request.post({
         url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
         oauth: {
@@ -115,12 +120,14 @@ module.exports = function(app){
         const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
         const parsedBody = JSON.parse(bodyString);
 
+        // oauth_token and oauth_token_secret are added to request and sent to passport middleware
         req.body['oauth_token'] = parsedBody.oauth_token;
         req.body['oauth_token_secret'] = parsedBody.oauth_token_secret;
         req.body['user_id'] = parsedBody.user_id;
 
         next();
       });
+      // 3. gets user information from twitter
     }, passport.authenticate('twitter-token', {session: false}), function(req, res, next) {
         if (!req.user) {
           return res.send(401, 'User Not Authenticated');
@@ -133,41 +140,5 @@ module.exports = function(app){
 
         return next();
       }, generateToken, sendToken);
-
-  //token handling middleware
-  var authenticate = expressJwt({
-    secret: twitterSecret,
-    requestProperty: 'auth',
-    getToken: function(req) {
-      if (req.headers['x-auth-token']) {
-        return req.headers['x-auth-token'];
-      }
-      return null;
-    }
-  });
-
-  var getCurrentUser = function(req, res, next) {
-    User.findById(req.auth.id, function(err, user) {
-      if (err) {
-        next(err);
-      } else {
-        req.user = user;
-        next();
-      }
-    });
-  };
-
-  var getOne = function (req, res) {
-    var user = req.user.toObject();
-
-    delete user['twitterProvider'];
-    delete user['__v'];
-
-    res.json(user);
-  };
-
-  app.get("/api/v1/auth/me", (req, res) => {
-    (authenticate, getCurrentUser, getOne)
-  });
 
 }
