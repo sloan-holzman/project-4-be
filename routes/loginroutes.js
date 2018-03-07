@@ -96,14 +96,14 @@ module.exports = function(app){
         }
         //  response is not formated as JSON object. transform it to JSON object
         var jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
-        // send it back to the client that has requested request_token.
+        // send it back to the frontend that has requested request_token
         res.send(JSON.parse(jsonStr));
       });
     });
 
     // 2. after user has logged in to twitter and received verification code (oath_verifier)
     app.post("/api/v1/auth/twitter", function(req, res, next) {
-      // send request to twitter to get oauth_token and oauth_token_secret
+      // send request to twitter to get oauth_token and oauth_token_secret, plus user_id
       request.post({
         url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
         oauth: {
@@ -117,6 +117,7 @@ module.exports = function(app){
           return res.send(500, { message: err.message });
         }
 
+        //  response is not formated as JSON object. transform it to JSON object
         const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
         const parsedBody = JSON.parse(bodyString);
 
@@ -127,7 +128,7 @@ module.exports = function(app){
 
         next();
       });
-      // 3. gets user information from twitter
+      // 3. gets user information from twitter; we aren't using cookies, so session is set to false
     }, passport.authenticate('twitter-token', {session: false}), function(req, res, next) {
         if (!req.user) {
           return res.send(401, 'User Not Authenticated');

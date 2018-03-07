@@ -14,6 +14,7 @@ const CardSchema = new mongoose.Schema({
   amount: String,
 	pin: String,
   updated: { type: Date, default: Date.now },
+	// url where user can check gift card's balance
 	cardHtml: String
 })
 
@@ -28,11 +29,13 @@ var UserSchema = new mongoose.Schema({
       id: String,
       token: String
     },
+		// when queried, twitterProvider info is not included unless specifically requested
     select: false
   },
   cards: [CardSchema]
 });
 
+// don't this is actually necessary.  just ensures user is saved as a json and that we can use getters and virtuals if we want
 UserSchema.set('toJSON', {getters: true, virtuals: true});
 
 
